@@ -2,41 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Pixel Art Quality Engineer Portfolio Design System
+All colors MUST be HSL. Retro terminal/programming theme.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Light theme - Classic terminal colors */
+    --background: 210 15% 97%;
+    --foreground: 210 15% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 210 15% 100%;
+    --card-foreground: 210 15% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 210 15% 100%;
+    --popover-foreground: 210 15% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Terminal green primary */
+    --primary: 120 100% 35%;
+    --primary-foreground: 210 15% 100%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Muted terminal background */
+    --secondary: 210 15% 92%;
+    --secondary-foreground: 210 15% 25%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 15% 90%;
+    --muted-foreground: 210 15% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Retro blue accent */
+    --accent: 220 100% 55%;
+    --accent-foreground: 210 15% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 15% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 210 15% 85%;
+    --input: 210 15% 85%;
+    --ring: 120 100% 35%;
 
-    --radius: 0.5rem;
+    /* Pixel art specific */
+    --terminal-green: 120 100% 50%;
+    --terminal-amber: 45 100% 50%;
+    --retro-purple: 270 100% 60%;
+    --pixel-blue: 220 100% 65%;
+    --success-green: 120 100% 35%;
+    --warning-orange: 25 100% 55%;
+    
+    /* Gradients */
+    --gradient-terminal: linear-gradient(135deg, hsl(120 100% 35%), hsl(120 100% 50%));
+    --gradient-retro: linear-gradient(135deg, hsl(270 100% 60%), hsl(220 100% 65%));
+    --gradient-pixel: linear-gradient(90deg, hsl(120 100% 50%), hsl(220 100% 65%), hsl(270 100% 60%));
+    
+    /* Shadows for pixel art effect */
+    --shadow-pixel: 4px 4px 0px hsl(var(--primary) / 0.3);
+    --shadow-glow: 0 0 20px hsl(var(--terminal-green) / 0.5);
+    
+    --radius: 0px;
 
     --sidebar-background: 0 0% 98%;
 
@@ -56,33 +77,36 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Dark theme - Terminal/CRT monitor feeling */
+    --background: 210 15% 8%;
+    --foreground: 120 100% 85%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 210 15% 12%;
+    --card-foreground: 120 100% 85%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 210 15% 12%;
+    --popover-foreground: 120 100% 85%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    /* Bright terminal green */
+    --primary: 120 100% 50%;
+    --primary-foreground: 210 15% 8%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 210 15% 15%;
+    --secondary-foreground: 120 100% 85%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 210 15% 18%;
+    --muted-foreground: 120 100% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    /* Bright retro blue */
+    --accent: 220 100% 65%;
+    --accent-foreground: 210 15% 8%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 100% 60%;
+    --destructive-foreground: 210 15% 8%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 210 15% 20%;
+    --input: 210 15% 20%;
+    --ring: 120 100% 50%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -100,6 +124,78 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-mono;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  /* Pixel art utilities */
+  .pixel-border {
+    border-style: solid;
+    border-image: linear-gradient(45deg, transparent 25%, currentColor 25%, currentColor 75%, transparent 75%) 2;
+  }
+
+  .pixel-shadow {
+    box-shadow: var(--shadow-pixel);
+  }
+
+  .terminal-glow {
+    text-shadow: 0 0 10px currentColor;
+    box-shadow: var(--shadow-glow);
+  }
+
+  /* ASCII Art Decorations */
+  .ascii-border {
+    position: relative;
+  }
+  
+  .ascii-border::before {
+    content: "████████████████████████████████████████";
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    line-height: 1;
+    color: hsl(var(--primary));
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* Retro animations */
+  @keyframes pixel-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  @keyframes terminal-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+  }
+
+  @keyframes scan-line {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+
+  .pixel-pulse {
+    animation: pixel-pulse 2s ease-in-out infinite;
+  }
+
+  .terminal-blink {
+    animation: terminal-blink 1.5s ease-in-out infinite;
+  }
+
+  /* Scan line effect */
+  .scan-line::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, hsl(var(--terminal-green) / 0.8), transparent);
+    animation: scan-line 3s linear infinite;
+    pointer-events: none;
+    z-index: 1000;
   }
 }
