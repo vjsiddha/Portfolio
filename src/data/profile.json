@@ -1,0 +1,116 @@
+{
+  "profileSummary": "Management Engineering student at the University of Waterloo (Graduating 2026) with experience across quality engineering, product development, and data-driven process improvement. I've worked in high-precision manufacturing, product platforms, and engineering projects, delivering measurable impact through root-cause analysis, automation, and user-focused solutions.",
+  "contact": {
+    "name": "Vardhman Jain",
+    "email": "vjsiddha@uwaterloo.ca",
+    "phone": "(647) 838-6925",
+    "linkedin": "linkedin.com/in/vardhman-jain-",
+    "github": "github.com/vjsiddha"
+  },
+  "skills": {
+    "product": ["Agile", "A/B Testing", "Wireframing", "KPIs", "GTM Strategy", "UX Research", "Competitive Analysis"],
+    "design": ["Figma", "PowerPoint", "Word", "DevOps", "Asana", "Jira", "UAT/QA Testing", "Javascript"],
+    "data": ["SQL", "Excel", "Tableau", "Power BI", "Python", "VBA", "R", "Node", "Google Colab", "Google Analytics"]
+  },
+  "projects": [
+    {
+      "title": "NourishNudge – AI Ingredient Substitution Engine",
+      "dates": "Feb 2024 – Apr 2024",
+      "stack": ["Python", "XGBoost", "Random Forest", "ML", "User Testing"],
+      "bullets": [
+        "Developed and tuned tree-based ML models (XGBoost, Random Forest) for ingredient substitutions, achieving 92% accuracy in user testing",
+        "Conducted user testing and incorporated feedback to improve match accuracy and satisfaction by 35%"
+      ],
+      "outcome": "92% substitution accuracy with 35% improvement in user satisfaction"
+    },
+    {
+      "title": "CleverDeck – Flashcard Creation Platform",
+      "dates": "Aug 2024 – Sep 2024",
+      "stack": ["Product Design", "Analytics", "User Feedback", "Dashboards"],
+      "bullets": [
+        "Boosted active user sessions by 45% through modular study flows and flashcard tracking dashboards",
+        "Implemented feedback collection and adoption tracking to refine study flow experience, increasing feature usage by 25%"
+      ],
+      "outcome": "45% increase in active sessions, 25% increase in feature usage"
+    }
+  ],
+  "experience": [
+    {
+      "company": "ForceN",
+      "role": "Incoming Quality Engineer Intern",
+      "dates": "Sep 2025 – Dec 2025",
+      "location": "Toronto, ON",
+      "bullets": [
+        "Upcoming role in quality engineering operations"
+      ],
+      "impact": "Future position focused on quality engineering"
+    },
+    {
+      "company": "A. Berger Precision Ltd",
+      "role": "Quality Engineer Intern – Operations Analysis",
+      "dates": "Jan 2025 – Apr 2025",
+      "location": "Brampton, ON",
+      "bullets": [
+        "Identified recurring defects across 3 production lines by conducting root cause analysis and leading sprint-based resolution mapping",
+        "Built Tableau dashboards using inspection results and triage logs to enable data-informed prioritization of defect resolution",
+        "Standardized quality documentation in Confluence and linked it to version-controlled procedures in Git"
+      ],
+      "impact": "35% reduction in defect rates, 15% reduction in onboarding time"
+    },
+    {
+      "company": "Ozery Family Bakery",
+      "role": "Maintenance Planning Engineer Intern – Internal Tools",
+      "dates": "Sep 2023 – Dec 2023",
+      "location": "Vaughan, ON",
+      "bullets": [
+        "Reduced inventory holding costs by 25% by redesigning Excel-based forecasting models and refining reorder logic",
+        "Leveraged CMMS data to map technician workflows and reduce average task cycle time by 20%",
+        "Built a single-page KPI dashboard to support agile reviews and track team performance trends"
+      ],
+      "impact": "25% cost reduction, 20% cycle time improvement"
+    },
+    {
+      "company": "City of Brampton",
+      "role": "Engineering Analyst Intern – Infrastructure Projects",
+      "dates": "Jan 2023 – Apr 2023",
+      "location": "Brampton, ON",
+      "bullets": [
+        "Led risk assessments on $5M+ capital projects, aligning deliverables across 4 departments to avoid delays",
+        "Developed planning templates, and roadmapping frameworks that reduced delivery prep time by 30%",
+        "Coordinated stakeholder feedback to align project deliverables with long-term city planning initiatives"
+      ],
+      "impact": "30% reduction in prep time, $5M+ project risk management"
+    },
+    {
+      "company": "Royal Bank of Canada",
+      "role": "Internal Operations Intern – HR Technology",
+      "dates": "May 2022 – Aug 2022",
+      "location": "Mississauga, ON",
+      "bullets": [
+        "Automated 4 workflows using Google Apps Script, cutting manual input by 40% and reducing approval delays",
+        "Designed and implemented interactive dashboards in Google Data Studio to track platform usage and measure adoption rates"
+      ],
+      "impact": "40% reduction in manual input, optimized 5 HR systems"
+    }
+  ],
+  "leadership": [
+    {
+      "title": "President – UW Entrepreneurship Society",
+      "dates": "Jan 2024 – Aug 2024",
+      "bullets": [
+        "Led 10+ campus tech and design events and boosted engagement by 40% using Airtable tracking workflows",
+        "Partnered with sponsors and internal teams to align event roadmaps with society KPIs, securing over $8,000 in funding"
+      ],
+      "impact": "40% engagement boost, $8K+ funding secured"
+    }
+  ],
+  "education": [
+    {
+      "school": "University of Waterloo",
+      "program": "Bachelor of Applied Science in Management Engineering",
+      "dates": "Sep 2021 – Apr 2026",
+      "location": "Waterloo, ON",
+      "highlights": ["Simulation (Arena)", "Quality Control", "Optimization (Excel Solver, VBA, Macros)", "Human-Computer Interaction (Figma)", "Data Structures and Algorithms", "Supply Chain Management"]
+    }
+  ]
+}

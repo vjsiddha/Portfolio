@@ -4,6 +4,9 @@ import { ThemeToggle } from "@/components/ThemeToggle"
 import { PixelCard } from "@/components/PixelCard"
 import { SkillBadge } from "@/components/SkillBadge"
 import { TerminalText } from "@/components/TerminalText"
+import { ProjectModal, ProjectModalData } from "@/components/ProjectModal"
+import { ChatLauncher } from "@/components/ChatLauncher"
+import { useNavigate } from "react-router-dom"
 import { 
   Code, 
   Bug, 
@@ -19,15 +22,42 @@ import {
   ExternalLink
 } from "lucide-react"
 import qeAvatar from "@/assets/qe-avatar.png"
+import profileData from "@/data/profile.json"
+import { ProfileData } from "@/types/profile"
 
 const Index = () => {
+  const navigate = useNavigate()
   const [showGreeting, setShowGreeting] = useState(false)
   const [activeSection, setActiveSection] = useState("hero")
+  const [modalProject, setModalProject] = useState<ProjectModalData | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  
+  const profile = profileData as ProfileData
 
   useEffect(() => {
     const timer = setTimeout(() => setShowGreeting(true), 500)
     return () => clearTimeout(timer)
   }, [])
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+      setActiveSection(sectionId)
+    }
+  }
+
+  const openProjectModal = (project: any) => {
+    const modalData: ProjectModalData = {
+      title: project.title,
+      dates: project.dates,
+      bullets: project.bullets,
+      stack: project.stack,
+      outcome: project.outcome
+    }
+    setModalProject(modalData)
+    setIsModalOpen(true)
+  }
 
   const skills = {
     product: [
@@ -130,38 +160,45 @@ const Index = () => {
           <div className="flex gap-4 items-center">
             <Button 
               variant="ghost" 
-              onClick={() => setActiveSection("hero")}
+              onClick={() => scrollToSection("hero")}
               className="font-mono hover:text-primary"
             >
               Home
             </Button>
             <Button 
               variant="ghost" 
-              onClick={() => setActiveSection("skills")}
+              onClick={() => scrollToSection("skills")}
               className="font-mono hover:text-primary"
             >
               Skills
             </Button>
             <Button 
               variant="ghost" 
-              onClick={() => setActiveSection("projects")}
+              onClick={() => scrollToSection("projects")}
               className="font-mono hover:text-primary"
             >
               Projects
             </Button>
             <Button 
               variant="ghost" 
-              onClick={() => setActiveSection("experience")}
+              onClick={() => scrollToSection("experience")}
               className="font-mono hover:text-primary"
             >
               Experience
             </Button>
             <Button 
               variant="ghost" 
-              onClick={() => setActiveSection("contact")}
+              onClick={() => scrollToSection("contact")}
               className="font-mono hover:text-primary"
             >
               Contact
+            </Button>
+            <Button 
+              variant="ghost" 
+              onClick={() => navigate('/chat')}
+              className="font-mono hover:text-primary"
+            >
+              Chat
             </Button>
             <ThemeToggle />
           </div>
@@ -205,7 +242,10 @@ const Index = () => {
               </div>
 
               <div className="flex gap-4">
-                <Button className="pixel-shadow bg-gradient-terminal border-2 border-primary font-mono hover:shadow-glow">
+                <Button 
+                  className="pixel-shadow bg-gradient-terminal border-2 border-primary font-mono hover:shadow-glow"
+                  onClick={() => scrollToSection("contact")}
+                >
                   <Mail className="w-4 h-4 mr-2" />
                   Contact Me
                 </Button>
@@ -213,6 +253,7 @@ const Index = () => {
                   <ExternalLink className="w-4 h-4 mr-2" />
                   View Resume
                 </Button>
+                <ChatLauncher />
               </div>
             </div>
 
@@ -316,30 +357,31 @@ const Index = () => {
             </h2>
             
             <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
-              {projects.map((project, index) => (
+              {profile.projects.map((project, index) => (
                 <PixelCard key={index} title={project.title} glitch>
                   <div className="space-y-4">
                     <div className="space-y-2 text-sm">
-                      <p className="text-muted-foreground font-mono">{project.date}</p>
-                      <p className="text-primary">{project.description}</p>
-                      <p className="text-accent">{project.impact}</p>
+                      <p className="text-muted-foreground font-mono">{project.dates}</p>
+                      <p className="text-primary">{project.bullets[0]}</p>
+                      <p className="text-accent">{project.outcome}</p>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {project.tech.map((tech, techIndex) => (
+                      {project.stack.map((tech, techIndex) => (
                         <SkillBadge key={techIndex} variant="secondary">
                           {tech}
                         </SkillBadge>
                       ))}
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className={`font-mono text-sm px-2 py-1 border-2 pixel-shadow ${
-                        project.status === 'Complete' ? 'border-success text-success bg-success/10' :
-                        project.status === 'Active' ? 'border-primary text-primary bg-primary/10' :
-                        'border-accent text-accent bg-accent/10'
-                      }`}>
-                        {project.status}
+                      <span className="font-mono text-sm px-2 py-1 border-2 pixel-shadow border-primary text-primary bg-primary/10">
+                        COMPLETE
                       </span>
-                      <Button variant="ghost" size="sm" className="font-mono hover:text-primary">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="font-mono hover:text-primary"
+                        onClick={() => openProjectModal(project)}
+                      >
                         View Details →
                       </Button>
                     </div>
@@ -360,18 +402,19 @@ const Index = () => {
             </h2>
             
             <div className="space-y-6">
-              {experiences.map((exp, index) => (
-                <PixelCard key={index} title={`${exp.title} @ ${exp.company}`} glitch>
+              {profile.experience.map((exp, index) => (
+                <PixelCard key={index} title={`${exp.role} @ ${exp.company}`} glitch>
                   <div className="space-y-4">
-                    <p className="text-muted-foreground font-mono text-sm">{exp.date}</p>
+                    <p className="text-muted-foreground font-mono text-sm">{exp.dates}</p>
                     <div className="space-y-2">
-                      {exp.achievements.map((achievement, achIndex) => (
-                        <div key={achIndex} className="flex items-start gap-2">
+                      {exp.bullets.slice(0, 2).map((bullet, bulletIndex) => (
+                        <div key={bulletIndex} className="flex items-start gap-2">
                           <span className="text-primary font-mono">•</span>
-                          <span className="text-sm">{achievement}</span>
+                          <span className="text-sm">{bullet}</span>
                         </div>
                       ))}
                     </div>
+                    <p className="text-xs text-accent font-mono">Impact: {exp.impact}</p>
                   </div>
                 </PixelCard>
               ))}
@@ -388,21 +431,22 @@ const Index = () => {
               LEADERSHIP.EXE
             </h2>
             
-            <PixelCard title="President – UW Entrepreneurship Society" className="max-w-4xl mx-auto" glitch>
-              <div className="space-y-4">
-                <p className="text-muted-foreground font-mono text-sm">Jan 2024 – Aug 2024</p>
-                <div className="space-y-2">
-                  <div className="flex items-start gap-2">
-                    <span className="text-primary font-mono">•</span>
-                    <span className="text-sm">Led 10+ tech/design events, boosting engagement by 40%</span>
+{profile.leadership.map((leadership, index) => (
+              <PixelCard key={index} title={leadership.title} className="max-w-4xl mx-auto" glitch>
+                <div className="space-y-4">
+                  <p className="text-muted-foreground font-mono text-sm">{leadership.dates}</p>
+                  <div className="space-y-2">
+                    {leadership.bullets.map((bullet, bulletIndex) => (
+                      <div key={bulletIndex} className="flex items-start gap-2">
+                        <span className="text-primary font-mono">•</span>
+                        <span className="text-sm">{bullet}</span>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex items-start gap-2">
-                    <span className="text-primary font-mono">•</span>
-                    <span className="text-sm">Secured $8K+ funding through sponsor partnerships</span>
-                  </div>
+                  <p className="text-xs text-accent font-mono">Impact: {leadership.impact}</p>
                 </div>
-              </div>
-            </PixelCard>
+              </PixelCard>
+            ))}
           </div>
         </div>
       </section>
@@ -415,40 +459,24 @@ const Index = () => {
               EDUCATION.SYS
             </h2>
             
-            <PixelCard title="University of Waterloo – BASc, Management Engineering" className="max-w-4xl mx-auto" glitch>
-              <div className="space-y-4">
-                <p className="text-muted-foreground font-mono text-sm">Sep 2021 – Apr 2026 (Expected)</p>
-                <div className="space-y-2">
-                  <p className="text-primary font-semibold">Relevant Courses:</p>
-                  <div className="grid md:grid-cols-2 gap-2 text-sm">
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent">•</span>
-                      <span>Simulation (Arena)</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent">•</span>
-                      <span>Quality Control</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent">•</span>
-                      <span>Optimization (Excel Solver, VBA, Macros)</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent">•</span>
-                      <span>Human-Computer Interaction (Figma)</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent">•</span>
-                      <span>Data Structures & Algorithms</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-accent">•</span>
-                      <span>Supply Chain Management</span>
+{profile.education.map((edu, index) => (
+              <PixelCard key={index} title={`${edu.school} – ${edu.program}`} className="max-w-4xl mx-auto" glitch>
+                <div className="space-y-4">
+                  <p className="text-muted-foreground font-mono text-sm">{edu.dates}</p>
+                  <div className="space-y-2">
+                    <p className="text-primary font-semibold">Relevant Courses:</p>
+                    <div className="grid md:grid-cols-2 gap-2 text-sm">
+                      {edu.highlights.map((course, courseIndex) => (
+                        <div key={courseIndex} className="flex items-center gap-2">
+                          <span className="text-accent">•</span>
+                          <span>{course}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
-              </div>
-            </PixelCard>
+              </PixelCard>
+            ))}
           </div>
         </div>
       </section>
@@ -469,15 +497,26 @@ const Index = () => {
                 </p>
                 
                 <div className="flex justify-center gap-4">
-                  <Button className="pixel-shadow bg-gradient-terminal border-2 border-primary font-mono hover:shadow-glow">
+                  <Button 
+                    className="pixel-shadow bg-gradient-terminal border-2 border-primary font-mono hover:shadow-glow"
+                    onClick={() => window.open(`mailto:${profile.contact.email}`, '_blank')}
+                  >
                     <Mail className="w-4 h-4 mr-2" />
                     Email Me
                   </Button>
-                  <Button variant="outline" className="pixel-shadow border-2 font-mono hover:shadow-glow">
+                  <Button 
+                    variant="outline" 
+                    className="pixel-shadow border-2 font-mono hover:shadow-glow"
+                    onClick={() => window.open(`https://${profile.contact.github}`, '_blank')}
+                  >
                     <Github className="w-4 h-4 mr-2" />
                     GitHub
                   </Button>
-                  <Button variant="outline" className="pixel-shadow border-2 font-mono hover:shadow-glow">
+                  <Button 
+                    variant="outline" 
+                    className="pixel-shadow border-2 font-mono hover:shadow-glow"
+                    onClick={() => window.open(`https://${profile.contact.linkedin}`, '_blank')}
+                  >
                     <Linkedin className="w-4 h-4 mr-2" />
                     LinkedIn
                   </Button>
@@ -502,6 +541,13 @@ const Index = () => {
           </p>
         </div>
       </footer>
+
+      {/* Project Modal */}
+      <ProjectModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        project={modalProject}
+      />
     </div>
   )
 }
