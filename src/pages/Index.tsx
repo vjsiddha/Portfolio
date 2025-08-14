@@ -29,39 +29,93 @@ const Index = () => {
     return () => clearTimeout(timer)
   }, [])
 
-  const skills = [
-    { name: "Python", variant: "primary" as const },
-    { name: "JavaScript", variant: "accent" as const },
-    { name: "Selenium", variant: "retro" as const },
-    { name: "Cypress", variant: "secondary" as const },
-    { name: "Jest", variant: "primary" as const },
-    { name: "Docker", variant: "accent" as const },
-    { name: "Jenkins", variant: "retro" as const },
-    { name: "Git", variant: "secondary" as const },
-    { name: "SQL", variant: "primary" as const },
-    { name: "API Testing", variant: "accent" as const },
-    { name: "Automation", variant: "retro" as const },
-    { name: "CI/CD", variant: "secondary" as const }
-  ]
+  const skills = {
+    product: [
+      { name: "Agile", variant: "primary" as const },
+      { name: "A/B Testing", variant: "accent" as const },
+      { name: "Wireframing", variant: "retro" as const },
+      { name: "KPIs", variant: "secondary" as const },
+      { name: "GTM Strategy", variant: "primary" as const },
+      { name: "UX Research", variant: "accent" as const },
+      { name: "Competitive Analysis", variant: "retro" as const }
+    ],
+    design: [
+      { name: "Figma", variant: "primary" as const },
+      { name: "PowerPoint", variant: "secondary" as const },
+      { name: "DevOps", variant: "accent" as const },
+      { name: "Asana", variant: "retro" as const },
+      { name: "Jira", variant: "primary" as const },
+      { name: "UAT/QA Testing", variant: "secondary" as const },
+      { name: "JavaScript", variant: "accent" as const }
+    ],
+    data: [
+      { name: "SQL", variant: "primary" as const },
+      { name: "Excel", variant: "secondary" as const },
+      { name: "Tableau", variant: "accent" as const },
+      { name: "Power BI", variant: "retro" as const },
+      { name: "Python", variant: "primary" as const },
+      { name: "VBA", variant: "secondary" as const },
+      { name: "R", variant: "accent" as const },
+      { name: "Node", variant: "retro" as const },
+      { name: "Google Analytics", variant: "primary" as const }
+    ]
+  }
 
   const projects = [
     {
-      title: "E2E Test Automation Framework",
-      description: "Built comprehensive testing suite with Cypress and Python",
-      tech: ["Python", "Cypress", "Docker", "Jenkins"],
-      status: "Production"
+      title: "NourishNudge – AI Ingredient Substitution Engine",
+      description: "Achieved 92% substitution accuracy using ML models (XGBoost, Random Forest)",
+      date: "Feb 2024 – Apr 2024",
+      impact: "Improved match accuracy and satisfaction by 35% through user testing and feedback",
+      tech: ["Python", "ML", "XGBoost", "User Testing"],
+      status: "Complete"
     },
     {
-      title: "API Quality Dashboard", 
-      description: "Real-time monitoring dashboard for API performance and reliability",
-      tech: ["JavaScript", "Node.js", "PostgreSQL", "Grafana"],
+      title: "CleverDeck – Flashcard Creation Platform",
+      description: "Boosted active user sessions by 45% via modular study flows and dashboards",
+      date: "Aug 2024 – Sep 2024", 
+      impact: "Increased feature usage by 25% through feedback collection and adoption tracking",
+      tech: ["Product Design", "Analytics", "User Feedback", "Dashboards"],
       status: "Active"
+    }
+  ]
+
+  const experiences = [
+    {
+      title: "Quality Engineer Intern",
+      company: "A. Berger Precision Ltd",
+      date: "Jan 2025 – Apr 2025",
+      achievements: [
+        "Reduced defects by 35% via root-cause analysis and sprint-based resolution mapping",
+        "Built Tableau dashboards to prioritize high-impact fixes"
+      ]
     },
     {
-      title: "Bug Detection AI",
-      description: "Machine learning model to predict potential bug hotspots",
-      tech: ["Python", "TensorFlow", "Git Analysis", "CI/CD"],
-      status: "Research"
+      title: "Maintenance Planning Engineer Intern", 
+      company: "Ozery Family Bakery",
+      date: "Sep 2023 – Dec 2023",
+      achievements: [
+        "Cut inventory holding costs by 25% via Excel-based forecasting redesign",
+        "Reduced task cycle time by 20% through CMMS workflow mapping"
+      ]
+    },
+    {
+      title: "Engineering Analyst Intern",
+      company: "City of Brampton", 
+      date: "Jan 2023 – Apr 2023",
+      achievements: [
+        "Led risk assessments on $5M+ projects, aligning deliverables across 4 departments",
+        "Reduced prep time by 30% with planning templates and frameworks"
+      ]
+    },
+    {
+      title: "Internal Operations Intern",
+      company: "RBC",
+      date: "May 2022 – Aug 2022", 
+      achievements: [
+        "Automated 4 workflows, reducing manual input by 40%",
+        "Built dashboards to track adoption and optimize 5 HR systems"
+      ]
     }
   ]
 
@@ -97,6 +151,13 @@ const Index = () => {
             </Button>
             <Button 
               variant="ghost" 
+              onClick={() => setActiveSection("experience")}
+              className="font-mono hover:text-primary"
+            >
+              Experience
+            </Button>
+            <Button 
+              variant="ghost" 
               onClick={() => setActiveSection("contact")}
               className="font-mono hover:text-primary"
             >
@@ -115,12 +176,12 @@ const Index = () => {
               <div className="ascii-border"></div>
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-6xl font-bold font-mono text-primary terminal-glow">
-                  QUALITY_ENGINEER.EXE
+                  VARDHMAN_JAIN.EXE
                 </h1>
                 {showGreeting && (
                   <div className="text-xl md:text-2xl text-muted-foreground">
                     <TerminalText 
-                      text="> Ensuring code quality, one test at a time..." 
+                      text="> Quality Engineer | Product Thinker | Data-Driven Problem Solver" 
                       speed={50}
                     />
                   </div>
@@ -132,14 +193,14 @@ const Index = () => {
                   <span className="text-primary">$</span> <span className="text-accent">whoami</span>
                 </p>
                 <p className="text-muted-foreground ml-4">
-                  Senior Quality Engineer specializing in test automation, 
-                  CI/CD pipelines, and building robust testing frameworks.
+                  Management Engineering student at University of Waterloo (Graduating 2026) with experience 
+                  across quality engineering, product development, and data-driven process improvement.
                 </p>
                 <p className="text-lg">
-                  <span className="text-primary">$</span> <span className="text-accent">cat skills.txt</span>
+                  <span className="text-primary">$</span> <span className="text-accent">cat expertise.txt</span>
                 </p>
                 <p className="text-muted-foreground ml-4">
-                  Test Automation • API Testing • Performance Testing • DevOps
+                  High-precision manufacturing • Product platforms • Root-cause analysis • Automation • User-focused solutions
                 </p>
               </div>
 
@@ -180,64 +241,67 @@ const Index = () => {
             </h2>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              <PixelCard title="Testing Frameworks" glitch>
+              <PixelCard title="Product Tools" glitch>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <TestTube className="w-4 h-4 text-primary" />
-                    <span>Selenium WebDriver</span>
+                    <span>Agile • A/B Testing</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Bug className="w-4 h-4 text-primary" />
-                    <span>Cypress • Playwright</span>
+                    <span>Wireframing • KPIs</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Code className="w-4 h-4 text-primary" />
-                    <span>Jest • PyTest</span>
+                    <span>GTM Strategy • UX Research</span>
                   </div>
                 </div>
               </PixelCard>
 
-              <PixelCard title="Development" glitch>
+              <PixelCard title="Design & Delivery" glitch>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <Terminal className="w-4 h-4 text-primary" />
-                    <span>Python • JavaScript</span>
+                    <span>Figma • PowerPoint</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <GitBranch className="w-4 h-4 text-primary" />
-                    <span>Git • GitHub Actions</span>
+                    <span>DevOps • Asana • Jira</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Database className="w-4 h-4 text-primary" />
-                    <span>SQL • MongoDB</span>
+                    <span>UAT/QA Testing • JavaScript</span>
                   </div>
                 </div>
               </PixelCard>
 
-              <PixelCard title="DevOps & Tools" glitch>
+              <PixelCard title="Data & Visualization" glitch>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <Cpu className="w-4 h-4 text-primary" />
-                    <span>Docker • Kubernetes</span>
+                    <span>SQL • Excel • Tableau</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Shield className="w-4 h-4 text-primary" />
-                    <span>Jenkins • CircleCI</span>
+                    <span>Power BI • Python • VBA</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Terminal className="w-4 h-4 text-primary" />
-                    <span>AWS • Azure</span>
+                    <span>R • Node • Google Analytics</span>
                   </div>
                 </div>
               </PixelCard>
             </div>
 
-            <div className="flex flex-wrap gap-3 justify-center">
-              {skills.map((skill, index) => (
-                <SkillBadge key={index} variant={skill.variant}>
-                  {skill.name}
-                </SkillBadge>
-              ))}
+            <div className="space-y-6">
+              <h3 className="text-xl font-mono text-center text-primary">Core Skills</h3>
+              <div className="flex flex-wrap gap-3 justify-center">
+                {[...skills.product, ...skills.design, ...skills.data].map((skill, index) => (
+                  <SkillBadge key={index} variant={skill.variant}>
+                    {skill.name}
+                  </SkillBadge>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -251,10 +315,15 @@ const Index = () => {
               PROJECT_LOG.DB
             </h2>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-6">
               {projects.map((project, index) => (
-                <PixelCard key={index} title={project.title} description={project.description} glitch>
+                <PixelCard key={index} title={project.title} glitch>
                   <div className="space-y-4">
+                    <div className="space-y-2 text-sm">
+                      <p className="text-muted-foreground font-mono">{project.date}</p>
+                      <p className="text-primary">{project.description}</p>
+                      <p className="text-accent">{project.impact}</p>
+                    </div>
                     <div className="flex flex-wrap gap-2">
                       {project.tech.map((tech, techIndex) => (
                         <SkillBadge key={techIndex} variant="secondary">
@@ -264,20 +333,122 @@ const Index = () => {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className={`font-mono text-sm px-2 py-1 border-2 pixel-shadow ${
-                        project.status === 'Production' ? 'border-success text-success bg-success/10' :
+                        project.status === 'Complete' ? 'border-success text-success bg-success/10' :
                         project.status === 'Active' ? 'border-primary text-primary bg-primary/10' :
                         'border-accent text-accent bg-accent/10'
                       }`}>
                         {project.status}
                       </span>
                       <Button variant="ghost" size="sm" className="font-mono hover:text-primary">
-                        View Code →
+                        View Details →
                       </Button>
                     </div>
                   </div>
                 </PixelCard>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section id="experience" className="py-20 bg-secondary/20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold font-mono text-center mb-12 text-primary terminal-glow">
+              WORK_HISTORY.LOG
+            </h2>
+            
+            <div className="space-y-6">
+              {experiences.map((exp, index) => (
+                <PixelCard key={index} title={`${exp.title} @ ${exp.company}`} glitch>
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground font-mono text-sm">{exp.date}</p>
+                    <div className="space-y-2">
+                      {exp.achievements.map((achievement, achIndex) => (
+                        <div key={achIndex} className="flex items-start gap-2">
+                          <span className="text-primary font-mono">•</span>
+                          <span className="text-sm">{achievement}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </PixelCard>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership Section */}
+      <section id="leadership" className="py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold font-mono text-center mb-12 text-primary terminal-glow">
+              LEADERSHIP.EXE
+            </h2>
+            
+            <PixelCard title="President – UW Entrepreneurship Society" className="max-w-4xl mx-auto" glitch>
+              <div className="space-y-4">
+                <p className="text-muted-foreground font-mono text-sm">Jan 2024 – Aug 2024</p>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-2">
+                    <span className="text-primary font-mono">•</span>
+                    <span className="text-sm">Led 10+ tech/design events, boosting engagement by 40%</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <span className="text-primary font-mono">•</span>
+                    <span className="text-sm">Secured $8K+ funding through sponsor partnerships</span>
+                  </div>
+                </div>
+              </div>
+            </PixelCard>
+          </div>
+        </div>
+      </section>
+
+      {/* Education Section */}
+      <section id="education" className="py-20 bg-secondary/20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold font-mono text-center mb-12 text-primary terminal-glow">
+              EDUCATION.SYS
+            </h2>
+            
+            <PixelCard title="University of Waterloo – BASc, Management Engineering" className="max-w-4xl mx-auto" glitch>
+              <div className="space-y-4">
+                <p className="text-muted-foreground font-mono text-sm">Sep 2021 – Apr 2026 (Expected)</p>
+                <div className="space-y-2">
+                  <p className="text-primary font-semibold">Relevant Courses:</p>
+                  <div className="grid md:grid-cols-2 gap-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="text-accent">•</span>
+                      <span>Simulation (Arena)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-accent">•</span>
+                      <span>Quality Control</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-accent">•</span>
+                      <span>Optimization (Excel Solver, VBA, Macros)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-accent">•</span>
+                      <span>Human-Computer Interaction (Figma)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-accent">•</span>
+                      <span>Data Structures & Algorithms</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-accent">•</span>
+                      <span>Supply Chain Management</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </PixelCard>
           </div>
         </div>
       </section>
@@ -293,8 +464,8 @@ const Index = () => {
             <PixelCard title="Let's Connect" className="max-w-2xl mx-auto">
               <div className="space-y-6">
                 <p className="text-lg">
-                  Ready to improve your code quality? Let's talk about testing strategies, 
-                  automation frameworks, or just geek out about tech!
+                  Interested in quality engineering, product development, or data-driven solutions? 
+                  Let's discuss process improvement, automation, or collaboration opportunities!
                 </p>
                 
                 <div className="flex justify-center gap-4">
@@ -313,7 +484,7 @@ const Index = () => {
                 </div>
 
                 <div className="font-mono text-sm text-muted-foreground pt-4 border-t-2 border-primary/20">
-                  <TerminalText text="$ echo 'Looking forward to collaborating!' && exit 0" speed={30} />
+                  <TerminalText text="$ echo 'Ready to make an impact together!' && exit 0" speed={30} />
                 </div>
               </div>
             </PixelCard>
@@ -325,7 +496,7 @@ const Index = () => {
       <footer className="border-t-2 border-primary bg-background/80 py-6">
         <div className="container mx-auto px-4 text-center">
           <p className="font-mono text-muted-foreground">
-            <span className="text-primary">©</span> 2024 QUALITY_ENGINEER.DEV 
+            <span className="text-primary">©</span> 2024 VARDHMAN_JAIN.DEV 
             <span className="text-primary mx-2">|</span> 
             Built with <span className="text-accent">React</span> + <span className="text-primary">TypeScript</span>
           </p>
