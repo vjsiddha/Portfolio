@@ -2,7 +2,10 @@ export async function POST(request: Request) {
   try {
     const { query, context, apiKey } = await request.json();
     
-    if (!apiKey) {
+    // Use environment key if available, otherwise use provided key
+    const activeApiKey = process.env.OPENAI_API_KEY || apiKey;
+    
+    if (!activeApiKey) {
       return new Response(JSON.stringify({ error: 'API key required' }), { 
         status: 400,
         headers: { 'Content-Type': 'application/json' }
@@ -15,7 +18,7 @@ export async function POST(request: Request) {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${apiKey}`,
+        'Authorization': `Bearer ${activeApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

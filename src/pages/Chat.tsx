@@ -130,17 +130,28 @@ export default function Chat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Check for environment API key
+  // Check for API key availability
   useEffect(() => {
-    const envHasKey = process.env.OPENAI_API_KEY;
+    const checkAPIKeyAvailability = async () => {
+      try {
+        const response = await fetch('/api/check-key');
+        const data = await response.json();
+        if (data.hasKey) {
+          setIsLLMMode(true);
+          setShowApiKeyBanner(false);
+        }
+      } catch (error) {
+        console.log('No backend API key available');
+      }
+    };
+
     const localKey = localStorage.getItem('resume_chat_api_key');
-    
-    if (envHasKey) {
-      setIsLLMMode(true);
-      setShowApiKeyBanner(false);
-    } else if (localKey) {
+    if (localKey) {
       setTempApiKey(localKey);
       setIsLLMMode(true);
+      setShowApiKeyBanner(false);
+    } else {
+      checkAPIKeyAvailability();
     }
   }, []);
 
@@ -213,7 +224,7 @@ export default function Chat() {
   };
 
   const callLLMAPI = async (query: string, chunks: any[]) => {
-    const apiKeyToUse = process.env.OPENAI_API_KEY || tempApiKey;
+    const apiKeyToUse = tempApiKey; // Only use temp key from frontend
     
     try {
       const response = await fetch('/api/chat', {
