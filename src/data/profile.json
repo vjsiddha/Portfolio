@@ -15,7 +15,7 @@
   "projects": [
     {
       "title": "BetWise – Interactive Decision Support System",
-      "dates": "2024",
+      "dates": "May 2025 – Aug 2025",
       "stack": ["Python", "Streamlit", "XGBoost", "Altair", "Matplotlib", "The Odds API"],
       "bullets": [
         "Built an IDSS for sports betting, combining data science, user interaction, and real-time insights",
@@ -27,7 +27,7 @@
     },
     {
       "title": "MindfulMeals – Personalized Meal Planner",
-      "dates": "2024",
+      "dates": "Sept 2024 – Dec 2024",
       "stack": ["React", "Firebase", "Auth", "Firestore", "Recipe Search", "Profile"],
       "bullets": [
         "Developed a web app to find recipes based on pantry items, dietary restrictions, and preferences",
