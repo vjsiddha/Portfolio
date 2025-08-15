@@ -26,6 +26,7 @@ export interface ProfileData {
     location: string;
     bullets: string[];
     impact: string;
+    aliases?: string[];
   }>;
   leadership: Array<{
     title: string;

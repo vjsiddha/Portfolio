@@ -41,33 +41,51 @@ Edit `/src/data/profile.json` to update:
 
 ### Chat System Configuration
 
-The resume chat operates in two modes:
+The resume chat operates in two modes and supports robust retrieval with company/project aliases:
 
 #### Local Mode (Default)
-- Uses local keyword matching and retrieval
+- Uses enhanced BM25/TF-IDF retrieval with alias expansion
+- Chunks resume data into passages for better matching
+- Company aliases (e.g., "A. Berger" ⇄ "A. Berger Precision Ltd", "RBC" ⇄ "Royal Bank of Canada")
+- Project aliases (e.g., "BetWise" matches "BetWise – Interactive Decision Support System")
+- First-person responses ("I", "my") with source citations
 - No external API required
-- Answers strictly from resume JSON data
-- Limited but fast and private
 
-#### LLM Mode (Optional)
-1. Set environment variable: `OPENAI_API_KEY=your_api_key_here`
-2. The chat will automatically use GPT for enhanced responses
-3. Still grounded in resume data with source citations
-4. Better natural language understanding
+#### LLM Mode (OpenAI Integration)
+Two ways to connect OpenAI:
 
-### Switching Chat Modes
+**Temporary Key (Quick Testing):**
+1. Go to `/chat` page
+2. If no environment key is detected, a banner will appear
+3. Paste your OpenAI API key and click "Use Temporarily"
+4. Key is stored in browser localStorage for session use
+5. Enables immediate LLM-powered responses
 
-If `OPENAI_API_KEY` is set:
-- Chat mode indicator shows "Mode: LLM"
-- Enhanced natural language processing
-- More conversational responses
-- Source citations included
+**Permanent Key (Recommended):**
+1. In the chat banner, paste your API key and click "Make It Permanent"
+2. This copies the key to clipboard and opens Lovable's OpenAI Integration page
+3. Paste the key into Lovable's integration settings
+4. Save and rebuild the project
+5. Chat auto-detects environment key on next load
 
-Without API key:
-- Chat mode shows "Mode: Local"
-- Keyword-based matching
-- Fast responses
-- No external dependencies
+#### Alias System for Better Retrieval
+
+Edit `/src/data/profile.json` to add company/project aliases:
+
+```json
+{
+  "company": "A. Berger Precision Ltd",
+  "aliases": ["A. Berger", "Berger", "A. Berger Precision"]
+}
+```
+
+This ensures queries like "What did you do at Berger?" match "A. Berger Precision Ltd" experience.
+
+### Chat Mode Indicators
+
+- **Mode: Local** - Using enhanced local retrieval
+- **Mode: LLM (OpenAI)** - Using OpenAI with retrieved context
+- Banner appears when no API key is available for easy setup
 
 ## Development
 

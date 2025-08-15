@@ -14,6 +14,30 @@
   },
   "projects": [
     {
+      "title": "BetWise – Interactive Decision Support System",
+      "dates": "2024",
+      "stack": ["Python", "Streamlit", "XGBoost", "Altair", "Matplotlib", "The Odds API"],
+      "bullets": [
+        "Built an IDSS for sports betting, combining data science, user interaction, and real-time insights",
+        "Integrated historical NFL datasets with live odds via The Odds API; merged and cleaned data for accuracy",
+        "Transitioned from logistic regression to XGBoost for improved prediction calibration and ROI analysis",
+        "Delivered two key UIs: Explore Games (filters, ROI simulator) and Team Insights (performance stats, trend charts)"
+      ],
+      "outcome": "Interactive decision support system with real-time data integration and prediction modeling"
+    },
+    {
+      "title": "MindfulMeals – Personalized Meal Planner",
+      "dates": "2024",
+      "stack": ["React", "Firebase", "Auth", "Firestore", "Recipe Search", "Profile"],
+      "bullets": [
+        "Developed a web app to find recipes based on pantry items, dietary restrictions, and preferences",
+        "Built with React and Firebase (Auth, Firestore) for user accounts, saved recipes, and grocery cart features",
+        "Implemented nutrition display, cooking steps, allergy filtering, and profile customization",
+        "Followed agile sprints to improve usability, add recipe recommendations, and enhance search functionality"
+      ],
+      "outcome": "Personalized meal planning web app with Firebase backend and comprehensive recipe features"
+    },
+    {
       "title": "NourishNudge – AI Ingredient Substitution Engine",
       "dates": "Feb 2024 – Apr 2024",
       "stack": ["Python", "XGBoost", "Random Forest", "ML", "User Testing"],
@@ -43,7 +67,8 @@
       "bullets": [
         "Upcoming role in quality engineering operations"
       ],
-      "impact": "Future position focused on quality engineering"
+      "impact": "Future position focused on quality engineering",
+      "aliases": ["ForceN"]
     },
     {
       "company": "A. Berger Precision Ltd",
@@ -55,7 +80,8 @@
         "Built Tableau dashboards using inspection results and triage logs to enable data-informed prioritization of defect resolution",
         "Standardized quality documentation in Confluence and linked it to version-controlled procedures in Git"
       ],
-      "impact": "35% reduction in defect rates, 15% reduction in onboarding time"
+      "impact": "35% reduction in defect rates, 15% reduction in onboarding time",
+      "aliases": ["A. Berger", "Berger", "A. Berger Precision"]
     },
     {
       "company": "Ozery Family Bakery",
@@ -67,7 +93,8 @@
         "Leveraged CMMS data to map technician workflows and reduce average task cycle time by 20%",
         "Built a single-page KPI dashboard to support agile reviews and track team performance trends"
       ],
-      "impact": "25% cost reduction, 20% cycle time improvement"
+      "impact": "25% cost reduction, 20% cycle time improvement",
+      "aliases": ["Ozery", "Ozery Bakery", "Ozery Family"]
     },
     {
       "company": "City of Brampton",
@@ -79,7 +106,8 @@
         "Developed planning templates, and roadmapping frameworks that reduced delivery prep time by 30%",
         "Coordinated stakeholder feedback to align project deliverables with long-term city planning initiatives"
       ],
-      "impact": "30% reduction in prep time, $5M+ project risk management"
+      "impact": "30% reduction in prep time, $5M+ project risk management",
+      "aliases": ["Brampton", "City of Brampton"]
     },
     {
       "company": "Royal Bank of Canada",
@@ -90,7 +118,8 @@
         "Automated 4 workflows using Google Apps Script, cutting manual input by 40% and reducing approval delays",
         "Designed and implemented interactive dashboards in Google Data Studio to track platform usage and measure adoption rates"
       ],
-      "impact": "40% reduction in manual input, optimized 5 HR systems"
+      "impact": "40% reduction in manual input, optimized 5 HR systems",
+      "aliases": ["RBC", "Royal Bank"]
     }
   ],
   "leadership": [
