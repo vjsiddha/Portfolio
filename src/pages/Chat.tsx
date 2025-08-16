@@ -143,7 +143,7 @@ export default function Chat() {
   const [apiKey, setApiKey] = useState("");
   const [tempApiKey, setTempApiKey] = useState("");
   const [showApiKeyBanner, setShowApiKeyBanner] = useState(true);
-  const [isLLMMode, setIsLLMMode] = useState(false);
+  const [hasApiKey, setHasApiKey] = useState(false);
   const [resumeData, setResumeData] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -155,7 +155,7 @@ export default function Chat() {
         const response = await fetch('/api/check-key');
         const data = await response.json();
         if (data.hasKey) {
-          setIsLLMMode(true);
+          setHasApiKey(true);
           setShowApiKeyBanner(false);
         }
       } catch (error) {
@@ -166,7 +166,7 @@ export default function Chat() {
     const localKey = localStorage.getItem('resume_chat_api_key');
     if (localKey) {
       setTempApiKey(localKey);
-      setIsLLMMode(true);
+      setHasApiKey(true);
       setShowApiKeyBanner(false);
     } else {
       checkAPIKeyAvailability();
@@ -321,7 +321,7 @@ export default function Chat() {
     setTimeout(async () => {
       let result;
       
-      if (isLLMMode) {
+      if (hasApiKey || tempApiKey) {
         const chunks = retrieveRelevantChunks(currentInput);
         result = await callLLMAPI(currentInput, chunks);
       } else {
@@ -357,7 +357,7 @@ export default function Chat() {
     if (apiKey.trim()) {
       setTempApiKey(apiKey.trim());
       localStorage.setItem('resume_chat_api_key', apiKey.trim());
-      setIsLLMMode(true);
+      setHasApiKey(true);
       setShowApiKeyBanner(false);
       setApiKey("");
     }
@@ -392,7 +392,7 @@ export default function Chat() {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-xs font-mono text-muted-foreground">
-              Resume Q&A • Mode: {isLLMMode ? 'LLM (OpenAI)' : 'Local'}
+              Resume Q&A • Mode: {hasApiKey || tempApiKey ? 'LLM (OpenAI)' : 'Local'}
             </div>
             <ThemeToggle />
           </div>
@@ -403,7 +403,7 @@ export default function Chat() {
         <PixelCard title="Chat Interface" className="h-[calc(100vh-12rem)]" glitch>
           <div className="flex flex-col h-full">
             {/* OpenAI API Key Banner */}
-            {showApiKeyBanner && !isLLMMode && (
+            {showApiKeyBanner && !hasApiKey && !tempApiKey && (
               <div className="mb-4 p-3 border-2 border-primary/50 bg-primary/10 pixel-shadow">
                 <div className="flex items-center justify-between mb-2">
                   <div className="text-sm font-mono text-primary">Connect OpenAI for Enhanced Chat</div>
