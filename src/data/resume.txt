@@ -1,0 +1,51 @@
+Vardhman Jain
+Product Manager & Data Analyst
+
+PROFILE SUMMARY
+Product Manager with 2+ years of experience driving data-informed decisions and cross-functional collaboration. Skilled in product tools, design delivery, and data visualization. Passionate about creating user-centered solutions that balance business objectives with technical feasibility.
+
+CORE SKILLS
+Product Tools: Figma, Product Requirements Documents (PRDs), Wireframing, User Story Mapping, Roadmap Planning, Stakeholder Management
+Design & Delivery: Agile Methodologies, Scrum, Cross-functional Collaboration, User Experience (UX), A/B Testing, Feature Prioritization
+Data & Visualization: Python, SQL, Tableau, Power BI, Excel, Statistical Analysis, Data Modeling, Business Intelligence
+
+PROFESSIONAL EXPERIENCE
+
+A. Berger Precision Ltd | Product Operations Analyst | May 2023 – Aug 2023
+Streamlined inventory workflows by implementing data-driven insights, reducing processing time by 15% and improving accuracy across manufacturing operations. Led cross-functional initiatives to optimize production planning and quality control processes.
+
+Ozery Bakery | Operations Analyst Intern | Sept 2022 – Dec 2022  
+Analyzed sales and distribution data to identify optimization opportunities, resulting in improved delivery route efficiency. Collaborated with supply chain teams to enhance inventory management and reduce waste by 12%.
+
+Royal Bank of Canada (RBC) | Data Analyst Intern | Jan 2022 – Apr 2022
+Developed comprehensive data models and visualizations to support business decision-making processes. Created automated reporting systems that reduced manual analysis time by 30% and improved data accuracy for stakeholder presentations.
+
+PROJECTS
+
+BetWise – Interactive Decision Support System | May 2025 – Aug 2025
+Built an intelligent decision support system for sports betting using Python, Streamlit, XGBoost, and The Odds API. Integrated historical NFL datasets with live odds data, implementing machine learning models for improved prediction accuracy and ROI analysis. Designed user-friendly interfaces for game exploration and team performance insights.
+
+MindfulMeals – Personalized Meal Planner | Sept 2024 – Dec 2024
+Developed a React-based web application for personalized meal planning using Firebase for authentication and data storage. Implemented recipe search functionality with dietary restriction filtering, nutrition display, and grocery cart features. Applied agile development practices to enhance user experience and search functionality.
+
+NourishNudge – Nutrition Tracking App | Jan 2024 – Apr 2024
+Created a comprehensive nutrition tracking application focusing on user-friendly design and accurate calorie counting. Integrated with nutrition APIs to provide detailed food information and implemented goal-setting features for health tracking.
+
+CleverDeck – Flashcard Study Platform | May 2023 – Aug 2023
+Built an interactive study platform with spaced repetition algorithms to optimize learning efficiency. Developed user analytics to track study progress and implemented collaborative features for shared deck creation.
+
+EDUCATION
+
+University of Waterloo | Bachelor of Mathematics, Statistics & Business | Sept 2020 – Apr 2024
+Relevant Coursework: Statistics, Business Analytics, Operations Research, Database Management, Software Engineering, Mathematical Optimization
+
+LEADERSHIP EXPERIENCE
+
+Statistics Student Association | VP External | Sept 2023 – Apr 2024
+Led external partnerships and industry networking initiatives, organizing career development events and workshops for 200+ students. Increased industry engagement by 40% through strategic partnership development with local tech companies.
+
+CONTACT INFORMATION
+Email: vardhman.jain@uwaterloo.ca
+Phone: (647) 555-0123
+LinkedIn: linkedin.com/in/vardhmanjain
+GitHub: github.com/vardhmanjain

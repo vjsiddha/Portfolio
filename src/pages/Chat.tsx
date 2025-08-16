@@ -13,7 +13,6 @@ interface Message {
   text: string;
   sender: 'user' | 'bot';
   timestamp: Date;
-  followUpSuggestions?: string[];
 }
 
 const SEED_QUESTIONS = [
@@ -25,14 +24,6 @@ const SEED_QUESTIONS = [
   "What's my education?",
   "How can you contact me?"
 ];
-
-type ResponseMode = 'brief' | 'normal' | 'detailed';
-
-const RESPONSE_LIMITS = {
-  brief: 280,
-  normal: 600,
-  detailed: 800
-};
 
 // Build alias mapping for better retrieval
 const buildAliasMap = (profile: ProfileData) => {
@@ -55,21 +46,31 @@ const buildAliasMap = (profile: ProfileData) => {
   return aliasMap;
 };
 
-// Chunk profile data for better retrieval
-const chunkProfileData = (profile: ProfileData) => {
-  const chunks: Array<{ content: string; source: string; type: string }> = [];
+// Load and chunk both profile data and resume text
+const loadResumeData = async () => {
+  try {
+    const response = await fetch('/src/data/resume.txt');
+    const resumeText = await response.text();
+    return resumeText;
+  } catch (error) {
+    console.log('Resume file not found, using profile data only');
+    return '';
+  }
+};
+
+// Chunk all available data for retrieval
+const chunkAllData = (profile: ProfileData, resumeText: string = '') => {
+  const chunks: Array<{ content: string; type: string }> = [];
   
   // Profile summary
   chunks.push({
     content: `I am ${profile.contact.name}. ${profile.profileSummary}`,
-    source: "Profile Summary",
     type: "summary"
   });
   
   // Skills
   chunks.push({
     content: `My core skills include: Product Tools (${profile.skills.product.join(', ')}), Design & Delivery (${profile.skills.design.join(', ')}), and Data & Visualization (${profile.skills.data.join(', ')}).`,
-    source: "Skills",
     type: "skills"
   });
   
@@ -77,7 +78,6 @@ const chunkProfileData = (profile: ProfileData) => {
   profile.projects.forEach(project => {
     chunks.push({
       content: `${project.title} (${project.dates}): ${project.bullets.join(' ')}`,
-      source: `Projects – ${project.title}`,
       type: "project"
     });
   });
@@ -86,7 +86,6 @@ const chunkProfileData = (profile: ProfileData) => {
   profile.experience.forEach(exp => {
     chunks.push({
       content: `At ${exp.company} as ${exp.role} (${exp.dates}): ${exp.bullets.join(' ')} Impact: ${exp.impact}`,
-      source: `Experience – ${exp.company}`,
       type: "experience"
     });
   });
@@ -95,7 +94,6 @@ const chunkProfileData = (profile: ProfileData) => {
   profile.education.forEach(edu => {
     chunks.push({
       content: `I studied ${edu.program} at ${edu.school} (${edu.dates}). Relevant courses: ${edu.highlights.join(', ')}.`,
-      source: "Education",
       type: "education"
     });
   });
@@ -104,7 +102,6 @@ const chunkProfileData = (profile: ProfileData) => {
   profile.leadership.forEach(leadership => {
     chunks.push({
       content: `As ${leadership.title} (${leadership.dates}): ${leadership.bullets.join(' ')} Impact: ${leadership.impact}`,
-      source: "Leadership",
       type: "leadership"
     });
   });
@@ -112,9 +109,21 @@ const chunkProfileData = (profile: ProfileData) => {
   // Contact
   chunks.push({
     content: `You can reach me at ${profile.contact.email}, call ${profile.contact.phone}, or connect on LinkedIn (${profile.contact.linkedin}) or GitHub (${profile.contact.github}).`,
-    source: "Contact",
     type: "contact"
   });
+  
+  // Add resume text chunks if available
+  if (resumeText) {
+    const resumeSections = resumeText.split('\n\n').filter(section => section.trim());
+    resumeSections.forEach(section => {
+      if (section.length > 50) { // Only meaningful sections
+        chunks.push({
+          content: section.trim(),
+          type: "resume"
+        });
+      }
+    });
+  }
   
   return chunks;
 };
@@ -135,12 +144,11 @@ export default function Chat() {
   const [tempApiKey, setTempApiKey] = useState("");
   const [showApiKeyBanner, setShowApiKeyBanner] = useState(true);
   const [isLLMMode, setIsLLMMode] = useState(false);
-  const [responseMode, setResponseMode] = useState<ResponseMode>('brief');
-  const [expandedMessages, setExpandedMessages] = useState<Set<string>>(new Set());
+  const [resumeData, setResumeData] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Check for API key availability
+  // Check for API key availability and load resume data
   useEffect(() => {
     const checkAPIKeyAvailability = async () => {
       try {
@@ -163,6 +171,9 @@ export default function Chat() {
     } else {
       checkAPIKeyAvailability();
     }
+
+    // Load resume data
+    loadResumeData().then(setResumeData);
   }, []);
 
   const scrollToBottom = () => {
@@ -179,7 +190,7 @@ export default function Chat() {
 
   const getIntentBasedChunks = (query: string) => {
     const profile = profileData as ProfileData;
-    const allChunks = chunkProfileData(profile);
+    const allChunks = chunkAllData(profile, resumeData);
     const lowerQuery = query.toLowerCase();
     
     // Intent routing - filter chunks by section type
@@ -188,7 +199,7 @@ export default function Chat() {
     // Company mentions -> Experience only
     const companyAliases = ['a. berger', 'berger', 'precision', 'ozery', 'bakery', 'brampton', 'rbc', 'royal bank', 'forcen'];
     if (companyAliases.some(alias => lowerQuery.includes(alias))) {
-      filteredChunks = allChunks.filter(chunk => chunk.type === 'experience');
+      filteredChunks = allChunks.filter(chunk => chunk.type === 'experience' || chunk.type === 'resume');
     }
     // Project mentions -> Projects only
     else if (lowerQuery.includes('betwise') || lowerQuery.includes('mindfulmeals') || lowerQuery.includes('nourishnudge') || lowerQuery.includes('cleverdeck')) {
@@ -239,55 +250,7 @@ export default function Chat() {
       .slice(0, limit);
   };
 
-  const generateFollowUpSuggestions = (query: string, chunks: any[]): string[] => {
-    const lowerQuery = query.toLowerCase();
-    
-    if (lowerQuery.includes('a. berger') || lowerQuery.includes('berger')) {
-      return ["Tools I used", "What I learned", "My other experiences"];
-    }
-    if (lowerQuery.includes('betwise') || lowerQuery.includes('mindfulmeals')) {
-      return ["Tech stack details", "My other projects", "What I learned"];
-    }
-    if (lowerQuery.includes('skill') || lowerQuery.includes('tool')) {
-      return ["My projects", "How I learned", "Work experience"];
-    }
-    if (lowerQuery.includes('education') || lowerQuery.includes('university')) {
-      return ["Relevant courses", "My projects", "Leadership roles"];
-    }
-    
-    return [];
-  };
-
-  const formatResponseByMode = (content: string, mode: ResponseMode): string => {
-    const limit = RESPONSE_LIMITS[mode];
-    
-    if (mode === 'detailed') {
-      // Convert to bullet format for detailed mode
-      const sentences = content.split('.').filter(s => s.trim().length > 0);
-      const bullets = sentences.slice(0, 4).map(s => `• ${s.trim()}.`);
-      return bullets.join('\n') + (sentences.length > 4 ? '\n\nThat covers the key highlights!' : '');
-    }
-    
-    if (content.length <= limit) {
-      return content;
-    }
-    
-    // Truncate at sentence boundary if possible
-    const sentences = content.split('.').filter(s => s.trim().length > 0);
-    let result = '';
-    
-    for (const sentence of sentences) {
-      if ((result + sentence + '.').length <= limit) {
-        result += sentence + '.';
-      } else {
-        break;
-      }
-    }
-    
-    return result || content.substring(0, limit - 3) + '...';
-  };
-
-  const searchProfile = (query: string): { content: string; followUpSuggestions?: string[] } => {
+  const searchProfile = (query: string): { content: string } => {
     const chunks = retrieveRelevantChunks(query);
     
     if (chunks.length === 0) {
@@ -296,14 +259,22 @@ export default function Chat() {
       };
     }
     
-    // Synthesize a conversational first-person response
+    // Synthesize a conversational first-person response (2-4 sentences)
     const rawContent = chunks.map(chunk => chunk.content).join(' ');
-    const formattedContent = formatResponseByMode(rawContent, responseMode);
-    const suggestions = generateFollowUpSuggestions(query, chunks);
+    
+    // Convert bullet points to natural sentences
+    const naturalContent = rawContent
+      .replace(/•\s*/g, '')
+      .replace(/\n+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    
+    // Limit to 2-4 sentences for conversational flow
+    const sentences = naturalContent.split('.').filter(s => s.trim().length > 0);
+    const limitedSentences = sentences.slice(0, 4).map(s => s.trim()).join('. ') + '.';
     
     return {
-      content: formattedContent,
-      followUpSuggestions: suggestions.length > 0 ? suggestions : undefined
+      content: limitedSentences
     };
   };
 
@@ -324,7 +295,7 @@ export default function Chat() {
       if (!response.ok) throw new Error('API call failed');
       
       const data = await response.json();
-      return data;
+      return { content: data.content };
     } catch (error) {
       console.error('LLM API error:', error);
       return searchProfile(query); // Fallback to local search
@@ -361,8 +332,7 @@ export default function Chat() {
         id: (Date.now() + 1).toString(),
         text: result.content,
         sender: 'bot',
-        timestamp: new Date(),
-        followUpSuggestions: result.followUpSuggestions
+        timestamp: new Date()
       };
 
       setMessages(prev => [...prev, botMessage]);
@@ -382,29 +352,6 @@ export default function Chat() {
     inputRef.current?.focus();
   };
 
-  const toggleMessageExpansion = (messageId: string) => {
-    const newExpanded = new Set(expandedMessages);
-    if (newExpanded.has(messageId)) {
-      newExpanded.delete(messageId);
-    } else {
-      newExpanded.add(messageId);
-    }
-    setExpandedMessages(newExpanded);
-  };
-
-  const truncateMessage = (text: string, limit: number) => {
-    if (text.length <= limit) return { truncated: text, hasMore: false };
-    
-    // Find last complete sentence within limit
-    const truncated = text.substring(0, limit);
-    const lastPeriod = truncated.lastIndexOf('.');
-    const cutPoint = lastPeriod > limit * 0.7 ? lastPeriod + 1 : limit;
-    
-    return {
-      truncated: text.substring(0, cutPoint) + (cutPoint < text.length ? '...' : ''),
-      hasMore: cutPoint < text.length
-    };
-  };
 
   const handleUseTemporarily = () => {
     if (apiKey.trim()) {
@@ -455,24 +402,6 @@ export default function Chat() {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <PixelCard title="Chat Interface" className="h-[calc(100vh-12rem)]" glitch>
           <div className="flex flex-col h-full">
-            {/* Response Mode Toggle */}
-            <div className="flex justify-end mb-2">
-              <div className="flex border border-primary/50 pixel-shadow">
-                {(['brief', 'normal', 'detailed'] as ResponseMode[]).map((mode) => (
-                  <button
-                    key={mode}
-                    onClick={() => setResponseMode(mode)}
-                    className={`px-2 py-1 text-xs font-mono border-r border-primary/50 last:border-r-0 ${
-                      responseMode === mode 
-                        ? 'bg-primary text-primary-foreground' 
-                        : 'bg-background hover:bg-primary/10'
-                    }`}
-                  >
-                    {mode.charAt(0).toUpperCase() + mode.slice(1)}
-                  </button>
-                ))}
-              </div>
-            </div>
             {/* OpenAI API Key Banner */}
             {showApiKeyBanner && !isLLMMode && (
               <div className="mb-4 p-3 border-2 border-primary/50 bg-primary/10 pixel-shadow">
@@ -520,72 +449,39 @@ export default function Chat() {
 
             {/* Messages Container with Fixed Height and Scroll */}
             <div className="max-h-[65vh] h-[65vh] md:max-h-[70vh] md:h-[70vh] overflow-y-auto space-y-4 mb-4 pr-2">
-              {messages.map((message) => {
-                const isExpanded = expandedMessages.has(message.id);
-                const currentLimit = RESPONSE_LIMITS[responseMode];
-                const { truncated, hasMore } = message.sender === 'bot' 
-                  ? truncateMessage(message.text, isExpanded ? message.text.length : currentLimit)
-                  : { truncated: message.text, hasMore: false };
-                
-                return (
-                  <div key={message.id}>
-                    <div className={`flex gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      {message.sender === 'bot' && (
-                        <div className="w-8 h-8 border-2 border-primary bg-primary/20 flex items-center justify-center pixel-shadow flex-shrink-0">
-                          <Bot className="w-4 h-4 text-primary" />
-                        </div>
-                      )}
-                      
-                      <div className={`max-w-[70%] ${message.sender === 'user' ? 'order-2' : ''}`}>
-                        <div
-                          className={`p-3 border-2 pixel-shadow font-mono text-sm ${
-                            message.sender === 'user'
-                              ? 'bg-primary text-primary-foreground border-primary'
-                              : 'bg-secondary/50 border-secondary'
-                          }`}
-                          style={{ wordBreak: 'break-word', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap' }}
-                        >
-                          {truncated}
-                          {hasMore && (
-                            <button
-                              onClick={() => toggleMessageExpansion(message.id)}
-                              className="ml-2 text-primary hover:underline text-xs"
-                            >
-                              {isExpanded ? 'Show less' : 'Show more'}
-                            </button>
-                          )}
-                        </div>
-                        <div className="text-xs text-muted-foreground mt-1 font-mono">
-                          {message.timestamp.toLocaleTimeString()}
-                        </div>
+              {messages.map((message) => (
+                <div key={message.id}>
+                  <div className={`flex gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    {message.sender === 'bot' && (
+                      <div className="w-8 h-8 border-2 border-primary bg-primary/20 flex items-center justify-center pixel-shadow flex-shrink-0">
+                        <Bot className="w-4 h-4 text-primary" />
                       </div>
-
-                      {message.sender === 'user' && (
-                        <div className="w-8 h-8 border-2 border-primary bg-primary/20 flex items-center justify-center pixel-shadow order-3 flex-shrink-0">
-                          <User className="w-4 h-4 text-primary" />
-                        </div>
-                      )}
-                    </div>
+                    )}
                     
-                    {/* Follow-up Suggestions */}
-                    {message.sender === 'bot' && message.followUpSuggestions && (
-                      <div className="ml-11 mt-2">
-                        <div className="flex flex-wrap gap-1">
-                          {message.followUpSuggestions.map((suggestion, index) => (
-                            <button
-                              key={index}
-                              onClick={() => handleSeedQuestion(suggestion)}
-                              className="text-xs font-mono px-2 py-1 border border-primary/50 hover:border-primary hover:bg-primary/10 pixel-shadow"
-                            >
-                              {suggestion}
-                            </button>
-                          ))}
-                        </div>
+                    <div className={`max-w-[70%] ${message.sender === 'user' ? 'order-2' : ''}`}>
+                      <div
+                        className={`p-3 border-2 pixel-shadow font-mono text-sm ${
+                          message.sender === 'user'
+                            ? 'bg-primary text-primary-foreground border-primary'
+                            : 'bg-secondary/50 border-secondary'
+                        }`}
+                        style={{ wordBreak: 'break-word', overflowWrap: 'anywhere', whiteSpace: 'pre-wrap' }}
+                      >
+                        {message.text}
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-1 font-mono">
+                        {message.timestamp.toLocaleTimeString()}
+                      </div>
+                    </div>
+
+                    {message.sender === 'user' && (
+                      <div className="w-8 h-8 border-2 border-primary bg-primary/20 flex items-center justify-center pixel-shadow order-3 flex-shrink-0">
+                        <User className="w-4 h-4 text-primary" />
                       </div>
                     )}
                   </div>
-                );
-              })}
+                </div>
+              ))}
 
               {isTyping && (
                 <div className="flex gap-3 justify-start">
