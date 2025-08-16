@@ -129,6 +129,7 @@ const chunkAllData = (profile: ProfileData, resumeText: string = '') => {
 };
 
 export default function Chat() {
+  console.log('Chat component loaded - build timestamp:', Date.now());
   const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([
     {
