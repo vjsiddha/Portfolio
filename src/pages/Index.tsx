@@ -5,7 +5,7 @@ import { PixelCard } from "@/components/PixelCard"
 import { SkillBadge } from "@/components/SkillBadge"
 import { TerminalText } from "@/components/TerminalText"
 import { ProjectModal, ProjectModalData } from "@/components/ProjectModal"
-
+import { ChatLauncher } from "@/components/ChatLauncher"
 import { useNavigate } from "react-router-dom"
 import { 
   Code, 
@@ -246,7 +246,7 @@ const Index = () => {
                   <ExternalLink className="w-4 h-4 mr-2" />
                   View Resume
                 </Button>
-                
+                <ChatLauncher />
               </div>
             </div>
 
