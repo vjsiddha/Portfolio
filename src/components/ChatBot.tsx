@@ -44,12 +44,50 @@ export const ChatBot = ({ isOpen, onClose }: ChatBotProps) => {
   const generateResponse = (question: string): string => {
     const lowerQuestion = question.toLowerCase()
     
-    // Experience related questions
+    // Specific company questions
+    if (lowerQuestion.includes("berger") || lowerQuestion.includes("a.berger") || lowerQuestion.includes("a. berger")) {
+      return `At A. Berger Precision Ltd, I worked as a Quality Engineer Intern focusing on Operations Analysis from January to April 2025. I made significant improvements to their manufacturing processes: I identified recurring defects across 3 production lines by conducting root cause analysis and leading sprint-based resolution mapping, which cut defect rates by 35% and reduced rework time. I also built Tableau dashboards using inspection results and triage logs to enable data-informed prioritization of defect resolution, helping production teams focus on the highest-impact fixes. Additionally, I standardized quality documentation in Confluence and linked it to version-controlled procedures in Git, improving traceability for corrective actions and reducing onboarding time by 15%.`
+    }
+
+    if (lowerQuestion.includes("brampton") || lowerQuestion.includes("city of brampton")) {
+      return `At the City of Brampton, I worked as an Engineering Analyst Intern on Infrastructure Projects from January to April 2023. My role involved managing large-scale municipal projects: I led risk assessments on $5M+ capital projects, aligning deliverables across 4 departments to avoid delays. I developed planning templates and roadmapping frameworks that reduced delivery prep time by 30%. I also coordinated stakeholder feedback to align project deliverables with long-term city planning initiatives. This experience taught me how to work effectively across multiple departments and manage complex infrastructure projects with significant budgets.`
+    }
+
+    if (lowerQuestion.includes("ozery") || lowerQuestion.includes("bakery")) {
+      return `At Ozery Family Bakery, I worked as a Maintenance Planning Engineer Intern focusing on Internal Tools from September to December 2023. I made substantial operational improvements: I reduced inventory holding costs by 25% by redesigning Excel-based forecasting models and refining reorder logic. I leveraged CMMS data to map technician workflows and reduce average task cycle time by 20%. I also built a single-page KPI dashboard to support agile reviews and track team performance trends. This role taught me how to optimize manufacturing operations through data analysis and process improvement.`
+    }
+
+    if (lowerQuestion.includes("rbc") || lowerQuestion.includes("royal bank") || lowerQuestion.includes("bank")) {
+      return `At Royal Bank of Canada, I worked as an Internal Operations Intern in HR Technology from May to August 2022. I focused on automation and system optimization: I automated 4 workflows using Google Apps Script, cutting manual input by 40% and reducing approval delays. I also designed and implemented interactive dashboards in Google Data Studio to track platform usage, measure adoption rates, and drive continuous optimization across 5 internal HR systems. This was my first major internship and gave me valuable experience in corporate technology environments.`
+    }
+
+    if (lowerQuestion.includes("forcen") || lowerQuestion.includes("force n")) {
+      return `I have an upcoming role at ForceN as a Quality Engineer Intern from September to December 2025 in Toronto. This will be my next internship focused on quality engineering operations. I'm excited to apply the skills I've developed at A. Berger Precision and other companies to new challenges in quality engineering.`
+    }
+
+    // Project-specific questions
+    if (lowerQuestion.includes("nourishnudge") || lowerQuestion.includes("ingredient")) {
+      return `NourishNudge was an AI Ingredient Substitution Engine I developed from February to April 2024. I developed and tuned tree-based ML models using XGBoost and Random Forest for ingredient substitutions, achieving 92% accuracy in user testing. I conducted extensive user testing and incorporated feedback to improve match accuracy and satisfaction by 35%. This project demonstrated my ability to build practical AI applications that solve real user problems.`
+    }
+
+    if (lowerQuestion.includes("cleverdeck") || lowerQuestion.includes("flashcard")) {
+      return `CleverDeck was a Flashcard Creation Platform I built from August to September 2024. I boosted active user sessions by 45% through modular study flows and flashcard tracking dashboards. I implemented feedback collection and adoption tracking to refine the study flow experience, increasing feature usage by 25%. This project focused on product design, analytics, and user feedback systems.`
+    }
+
+    if (lowerQuestion.includes("betwise") || lowerQuestion.includes("betting") || lowerQuestion.includes("sports")) {
+      return `BetWise was an Interactive Decision Support System I built from May to August 2025 for sports betting. I combined data science, user interaction, and real-time insights by integrating historical NFL datasets with live odds via The Odds API. I transitioned from logistic regression to XGBoost for improved prediction calibration and ROI analysis. I delivered two key UIs: Explore Games with filters and ROI simulator, and Team Insights with performance stats and trend charts.`
+    }
+
+    if (lowerQuestion.includes("mindfulmeals") || lowerQuestion.includes("meal planner")) {
+      return `MindfulMeals was a Personalized Meal Planner I developed from September to December 2024. I built a web app to find recipes based on pantry items, dietary restrictions, and preferences using React and Firebase (Auth, Firestore) for user accounts, saved recipes, and grocery cart features. I implemented nutrition display, cooking steps, allergy filtering, and profile customization, following agile sprints to improve usability and enhance search functionality.`
+    }
+
+    // General experience questions
     if (lowerQuestion.includes("experience") || lowerQuestion.includes("work") || lowerQuestion.includes("job")) {
-      if (lowerQuestion.includes("tesla") || lowerQuestion.includes("exciting")) {
-        return "One of the most exciting projects I worked on was leading the AI team at Tesla, where we focused on developing computer vision technology for Autopilot. This involved applying deep learning techniques to enable self-driving cars to perceive and understand their environment. The challenge of building robust AI systems that can safely navigate complex real-world scenarios was both technically fascinating and impactful."
+      if (lowerQuestion.includes("exciting") || lowerQuestion.includes("favorite") || lowerQuestion.includes("best")) {
+        return `One of the most exciting aspects of my work has been seeing the direct impact of data-driven improvements. At A. Berger Precision, reducing defect rates by 35% through root cause analysis was incredibly rewarding because it directly improved product quality and reduced waste. Similarly, at Ozery Family Bakery, cutting inventory costs by 25% through better forecasting models showed how technical skills can solve real business problems. I love tackling challenges that make a measurable difference.`
       }
-      return `I have experience across quality engineering, product development, and data-driven process improvement. My most recent role was as a Quality Engineer Intern at A. Berger Precision Ltd, where I reduced defect rates by 35% through root cause analysis and built Tableau dashboards for data-informed decision making. I've also worked at companies like Ozery Family Bakery, City of Brampton, and RBC, focusing on automation, process optimization, and dashboard development.`
+      return `I have diverse experience across quality engineering, product development, and data-driven process improvement. My roles have spanned from A. Berger Precision (quality engineering), to Ozery Family Bakery (maintenance planning), City of Brampton (infrastructure projects), and RBC (HR technology). Each role has taught me different aspects of using data and technology to solve business problems and improve processes.`
     }
 
     // Skills related questions
@@ -64,12 +102,12 @@ export const ChatBot = ({ isOpen, onClose }: ChatBotProps) => {
 
     // Education related questions
     if (lowerQuestion.includes("education") || lowerQuestion.includes("university") || lowerQuestion.includes("school")) {
-      return `I'm currently pursuing a Bachelor of Applied Science in Management Engineering at the University of Waterloo, graduating in 2026. My coursework includes Simulation, Quality Control, Optimization, Human-Computer Interaction, Data Structures and Algorithms, and Supply Chain Management. This program combines engineering principles with business strategy, which aligns perfectly with my interest in data-driven problem solving.`
+      return `I'm currently pursuing a Bachelor of Applied Science in Management Engineering at the University of Waterloo, graduating in 2026. My coursework includes Simulation (Arena), Quality Control, Optimization (Excel Solver, VBA, Macros), Human-Computer Interaction (Figma), Data Structures and Algorithms, and Supply Chain Management. This program combines engineering principles with business strategy, which aligns perfectly with my interest in data-driven problem solving.`
     }
 
     // Leadership questions
-    if (lowerQuestion.includes("leadership") || lowerQuestion.includes("president")) {
-      return `I served as President of the UW Entrepreneurship Society from January to August 2024. In this role, I led 10+ campus tech and design events, boosting engagement by 40% using Airtable tracking workflows. I also partnered with sponsors and internal teams to secure over $8,000 in funding while aligning event roadmaps with society KPIs.`
+    if (lowerQuestion.includes("leadership") || lowerQuestion.includes("president") || lowerQuestion.includes("entrepreneurship")) {
+      return `I served as President of the UW Entrepreneurship Society from January to August 2024. In this role, I led 10+ campus tech and design events, boosting engagement by 40% using Airtable tracking workflows. I also partnered with sponsors and internal teams to secure over $8,000 in funding while aligning event roadmaps with society KPIs. This experience taught me how to lead teams, manage events, and work with external stakeholders.`
     }
 
     // Contact/availability questions
