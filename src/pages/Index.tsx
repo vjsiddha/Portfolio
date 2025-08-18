@@ -5,6 +5,7 @@ import { PixelCard } from "@/components/PixelCard"
 import { SkillBadge } from "@/components/SkillBadge"
 import { TerminalText } from "@/components/TerminalText"
 import { ProjectModal, ProjectModalData } from "@/components/ProjectModal"
+import { ResumeModal } from "@/components/ResumeModal"
 import { ChatLauncher } from "@/components/ChatLauncher"
 import { useNavigate } from "react-router-dom"
 import { 
@@ -31,6 +32,7 @@ const Index = () => {
   const [activeSection, setActiveSection] = useState("hero")
   const [modalProject, setModalProject] = useState<ProjectModalData | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isResumeOpen, setIsResumeOpen] = useState(false)
   
   const profile = profileData as ProfileData
 
@@ -242,7 +244,11 @@ const Index = () => {
                   <Mail className="w-4 h-4 mr-2" />
                   Contact Me
                 </Button>
-                <Button variant="outline" className="pixel-shadow border-2 font-mono hover:shadow-glow">
+                <Button 
+                  variant="outline" 
+                  className="pixel-shadow border-2 font-mono hover:shadow-glow"
+                  onClick={() => setIsResumeOpen(true)}
+                >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   View Resume
                 </Button>
@@ -540,6 +546,12 @@ const Index = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         project={modalProject}
+      />
+
+      {/* Resume Modal */}
+      <ResumeModal 
+        isOpen={isResumeOpen}
+        onClose={() => setIsResumeOpen(false)}
       />
     </div>
   )
