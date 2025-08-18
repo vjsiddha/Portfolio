@@ -5,7 +5,7 @@ import { PixelCard } from "@/components/PixelCard"
 import { SkillBadge } from "@/components/SkillBadge"
 import { TerminalText } from "@/components/TerminalText"
 import { ProjectModal, ProjectModalData } from "@/components/ProjectModal"
-import { ChatLauncher } from "@/components/ChatLauncher"
+
 import { useNavigate } from "react-router-dom"
 import { 
   Code, 
@@ -193,13 +193,6 @@ const Index = () => {
             >
               Contact
             </Button>
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/chat')}
-              className="font-mono hover:text-primary"
-            >
-              Chat
-            </Button>
             <ThemeToggle />
           </div>
         </div>
@@ -253,7 +246,7 @@ const Index = () => {
                   <ExternalLink className="w-4 h-4 mr-2" />
                   View Resume
                 </Button>
-                <ChatLauncher />
+                
               </div>
             </div>
 
