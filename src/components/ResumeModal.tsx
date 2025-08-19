@@ -58,20 +58,15 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
             <DialogTitle className="font-mono text-primary text-xl">
               RESUME.PDF
             </DialogTitle>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handlePrintResume}
-                className="font-mono border-2 border-primary hover:shadow-glow"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Download
-              </Button>
-              <Button variant="ghost" size="sm" onClick={onClose}>
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handlePrintResume}
+              className="font-mono border-2 border-primary hover:shadow-glow"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Download
+            </Button>
           </div>
         </DialogHeader>
         
