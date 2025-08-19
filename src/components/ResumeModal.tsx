@@ -14,7 +14,40 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
   const profile = profileData as ProfileData
 
   const handlePrintResume = () => {
-    window.print()
+    const printContent = document.getElementById('resume-content')
+    if (printContent) {
+      const printWindow = window.open('', '_blank')
+      if (printWindow) {
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Resume - ${profile.contact.name}</title>
+              <style>
+                body { font-family: monospace; margin: 20px; line-height: 1.6; }
+                h1 { color: #000; font-size: 24px; text-align: center; }
+                h2 { color: #000; font-size: 18px; border-bottom: 1px solid #000; padding-bottom: 4px; }
+                h3 { color: #000; font-size: 16px; }
+                .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 16px; margin-bottom: 24px; }
+                .section { margin-bottom: 24px; }
+                .job { margin-bottom: 16px; }
+                .job-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px; }
+                .company { font-weight: bold; }
+                .dates { text-align: right; font-size: 14px; }
+                ul { margin: 8px 0; padding-left: 20px; }
+                li { margin-bottom: 4px; }
+                @media print { body { margin: 0; } }
+              </style>
+            </head>
+            <body>
+              ${printContent.innerHTML}
+            </body>
+          </html>
+        `)
+        printWindow.document.close()
+        printWindow.print()
+        printWindow.close()
+      }
+    }
   }
 
   return (
@@ -43,7 +76,7 @@ export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
         </DialogHeader>
         
         <ScrollArea className="max-h-[70vh] pr-4">
-          <div className="space-y-6 p-4 font-mono">
+          <div id="resume-content" className="space-y-6 p-4 font-mono">
             {/* Header */}
             <div className="text-center space-y-2 border-b-2 border-primary pb-4">
               <h1 className="text-2xl font-bold text-primary">{profile.contact.name}</h1>
