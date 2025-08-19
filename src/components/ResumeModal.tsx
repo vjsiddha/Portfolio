@@ -13,60 +13,76 @@ interface ResumeModalProps {
 export const ResumeModal = ({ isOpen, onClose }: ResumeModalProps) => {
   const profile = profileData as ProfileData
 
-  const handlePrintResume = () => {
-    const printContent = document.getElementById('resume-content')
-    if (printContent) {
-      const printWindow = window.open('', '_blank')
-      if (printWindow) {
-        printWindow.document.write(`
-          <html>
-            <head>
-              <title>Resume - ${profile.contact.name}</title>
-              <style>
-                body { font-family: monospace; margin: 20px; line-height: 1.6; }
-                h1 { color: #000; font-size: 24px; text-align: center; }
-                h2 { color: #000; font-size: 18px; border-bottom: 1px solid #000; padding-bottom: 4px; }
-                h3 { color: #000; font-size: 16px; }
-                .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 16px; margin-bottom: 24px; }
-                .section { margin-bottom: 24px; }
-                .job { margin-bottom: 16px; }
-                .job-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px; }
-                .company { font-weight: bold; }
-                .dates { text-align: right; font-size: 14px; }
-                ul { margin: 8px 0; padding-left: 20px; }
-                li { margin-bottom: 4px; }
-                @media print { body { margin: 0; } }
-              </style>
-            </head>
-            <body>
-              ${printContent.innerHTML}
-            </body>
-          </html>
-        `)
-        printWindow.document.close()
-        printWindow.print()
-        printWindow.close()
-      }
-    }
+  const handleDownloadResume = () => {
+    const resumeContent = `
+VARDHMAN JAIN
+vjsiddha@uwaterloo.ca | linkedin.com/in/vardhman-jain- | github.com/vjsiddha | (647) 838-6925
+
+SKILLS
+Product Tools: ${profile.skills.product.join(", ")}
+Design & Delivery: ${profile.skills.design.join(", ")}
+Data & Visualization: ${profile.skills.data.join(", ")}
+
+EXPERIENCE
+${profile.experience.map(exp => `
+${exp.role}
+${exp.company} | ${exp.dates} | ${exp.location}
+${exp.bullets.map(bullet => `• ${bullet}`).join('\n')}
+`).join('\n')}
+
+PROJECTS
+${profile.projects.map(project => `
+${project.title} | ${project.dates}
+${project.bullets.map(bullet => `• ${bullet}`).join('\n')}
+`).join('\n')}
+
+LEADERSHIP AND STRATEGY
+${profile.leadership.map(leadership => `
+${leadership.title} | ${leadership.dates}
+${leadership.bullets.map(bullet => `• ${bullet}`).join('\n')}
+`).join('\n')}
+
+EDUCATION
+${profile.education.map(edu => `
+${edu.school} | ${edu.dates} | ${edu.location}
+${edu.program}
+Relevant Courses: ${edu.highlights.join(", ")}
+`).join('\n')}
+    `.trim()
+
+    const blob = new Blob([resumeContent], { type: 'text/plain' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${profile.contact.name.replace(' ', '_')}_Resume.txt`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] border-2 border-primary pixel-shadow">
+      <DialogContent className="max-w-4xl max-h-[90vh] border-2 border-primary pixel-shadow [&>button]:hidden">
         <DialogHeader className="border-b-2 border-primary pb-4">
           <div className="flex items-center justify-between">
             <DialogTitle className="font-mono text-primary text-xl">
               RESUME.PDF
             </DialogTitle>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handlePrintResume}
-              className="font-mono border-2 border-primary hover:shadow-glow"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Download
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleDownloadResume}
+                className="font-mono border-2 border-primary hover:shadow-glow"
+              >
+                <Download className="w-4 h-4 mr-2" />
+                Download
+              </Button>
+              <Button variant="ghost" size="sm" onClick={onClose}>
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         </DialogHeader>
         
