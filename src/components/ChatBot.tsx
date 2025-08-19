@@ -119,33 +119,75 @@ export const ChatBot = ({ isOpen, onClose }: ChatBotProps) => {
     return `That's a great question! I'm passionate about quality engineering and data-driven problem solving. Based on my experience at companies like A. Berger Precision and Ozery Family Bakery, I've learned that the most exciting work happens at the intersection of technology and real business impact. Whether it's reducing defect rates by 35% or building ML models with 92% accuracy, I love tackling challenges that make a measurable difference. What specific aspect of my background would you like to know more about?`
   }
 
-  const handleSend = async () => {
-    if (!input.trim()) return
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      text: input,
-      isUser: true,
-      timestamp: new Date()
-    }
+  const toHistory = (msgs: Message[]) =>
+  msgs.map(m => ({ role: m.isUser ? "user" : "assistant", content: m.text }));
 
-    setMessages(prev => [...prev, userMessage])
-    setInput("")
-    setIsTyping(true)
+const buildContext = () => {
+  // Pull only what you need to keep token cost low
+  const email = (profile as any)?.contact?.email ?? "n/a";
+  const phone = (profile as any)?.contact?.phone ?? "n/a";
+  const links = (profile as any)?.links ?? {};
+  const basics = `Name: Vardhman Jain
+Email: ${email}
+Phone: ${phone}
+Links: ${JSON.stringify(links)}`;
 
-    // Simulate thinking time
-    setTimeout(() => {
-      const response = generateResponse(input)
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: response,
-        isUser: false,
-        timestamp: new Date()
-      }
-      setMessages(prev => [...prev, botMessage])
-      setIsTyping(false)
-    }, 1000)
+  // resumeText should be a single string; if it’s structured, join/serialize briefly
+  const resume = typeof resumeText === "string" ? resumeText : JSON.stringify(resumeText);
+
+  return `${basics}\n\nResume:\n${resume}`;
+};
+
+const askApi = async (historyMsgs: Message[]) => {
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      history: toHistory(historyMsgs),
+      context: buildContext(),
+    }),
+  });
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data.reply as string;
+};
+
+const handleSend = async () => {
+  if (!input.trim() || isTyping) return;
+
+  const userMessage: Message = {
+    id: Date.now().toString(),
+    text: input.trim(),
+    isUser: true,
+    timestamp: new Date(),
+  };
+
+  setMessages(prev => [...prev, userMessage]);
+  setInput("");
+  setIsTyping(true);
+
+  try {
+    const reply = await askApi([...messages, userMessage]); // pass full history
+    const botMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      text: reply,
+      isUser: false,
+      timestamp: new Date(),
+    };
+    setMessages(prev => [...prev, botMessage]);
+  } catch (e: any) {
+    setMessages(prev => [...prev, {
+      id: (Date.now() + 2).toString(),
+      text: "I hit an error reaching the assistant. Please try again in a moment.",
+      isUser: false,
+      timestamp: new Date(),
+    }]);
+  } finally {
+    setIsTyping(false);
   }
+};
+
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
