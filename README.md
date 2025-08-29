@@ -111,10 +111,6 @@ src/
 - `Chat.tsx`: Full chat interface
 - `PixelCard.tsx`: Main card styling component
 
-## Deployment
-
-Simply open [Lovable](https://lovable.dev/projects/52fda486-a40d-4973-a45e-e5712efd0829) and click on Share -> Publish.
-
 ## Technologies
 
 - **React 18** - UI framework
@@ -123,5 +119,3 @@ Simply open [Lovable](https://lovable.dev/projects/52fda486-a40d-4973-a45e-e5712
 - **Vite** - Build tool
 - **React Router** - Navigation
 - **shadcn/ui** - UI components
-
-Built with ❤️ using Lovable
